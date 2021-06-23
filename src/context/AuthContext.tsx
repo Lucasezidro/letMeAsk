@@ -29,6 +29,8 @@ export function AuthContextProvider(props: AuthContextProps) {
   // Exemplo: useEffect(() => {} [user]) quando a função for executada ele vai disparar o user
   // Se eu quiser que ele dispare uma unica vez eu deixo o vetor vazio
   useEffect(() => {
+    // o onAuthStateChanged é um addEventListener por isso preciso armazenar ele em uma const
+    // e retornar ela em forma de função
     const unsubscribe = auth.onAuthStateChanged(user =>{
       if(user) {
         const { displayName, photoURL, uid} = user
