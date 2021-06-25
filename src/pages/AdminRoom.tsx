@@ -2,6 +2,8 @@ import { useHistory, useParams } from 'react-router-dom'
 import { useState, FormEvent } from 'react'
 import logoImg from '../assets/images/logo.svg'
 import deleteImg from '../assets/images/delete.svg'
+import checkImg from '../assets/images/check.svg'
+import answerImg from '../assets/images/answer.svg'
 import { Button } from '../Components/button'
 import { RoomCode } from '../Components/Roomcode'
 import '../styles/room.scss'
@@ -44,6 +46,19 @@ export function AdminRoom() {
             await database.ref(`rooms/${roomId}/questions/${questionId}` ).remove()
        }
     }
+
+    async function handleCheckQuestionAsAnswered(questionId: string){
+        await database.ref(`rooms/${roomId}/questions/${questionId}` ).update({
+            isAnswered: true
+        })
+    }
+
+    async function handleHighLightQuestion(questionId: string){
+        await database.ref(`rooms/${roomId}/questions/${questionId}` ).update({
+            isHighLighted: true
+        })
+    }
+    
    
     async function handleSendQuestion(event: FormEvent) {
         event.preventDefault()
@@ -122,7 +137,23 @@ export function AdminRoom() {
                         key={question.id}
                         content={question.content}
                         author={question.author}
+                        isAnswered={question.isAnswered}
+                        isHighLighted={question.isHighLighted}
                         >
+
+                            <button
+                                type="button"
+                                onClick={() => handleCheckQuestionAsAnswered(question.id)}
+                            >
+                                <img src={checkImg} alt="Marcar como respondida" />
+                            </button>
+
+                            <button
+                                type="button"
+                                onClick={() => handleHighLightQuestion(question.id)}
+                            >
+                                <img src={answerImg} alt="dar destaque a pergunta" />
+                            </button>
 
                             <button
                                 type="button"
